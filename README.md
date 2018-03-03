@@ -139,7 +139,8 @@ high-contrast between tracer particles and the background. As a result, based on
 the MIP technique, firstly, all raw image frames (for i=1, 2,…, N, where N is
 the total number of frames to be analyzed) is rendered. Secondly, this rendered
 image is segmented by simply applying manually set threshold value so as to
-satisfyingly reveal all tracer particles.
+satisfyingly reveal all tracer particles. 
+(Alternative option: instead of using one global grid, skip this step-A and start using each frame sequence of the original image as an input in the following step-B, in which it will create different local grids for each frame).
 
 ```
 
@@ -182,7 +183,7 @@ step.
 
 ```
 
-hProfile = mean(projBW2); % horizontal profile
+hProfile = mean(projBW2); % horizontal profile, input image from step-A
 
 figure('position',[40 350 400 150]);
 
@@ -461,13 +462,10 @@ Output (Fig. 9): Final grid lines superimposed on the segmented MIP image shown 
 First, the non-regular grid is used to set a 3D grid of size RxCx1 cells, where R is the number of horizontal partition, C the number of vertical partition and one partition concerns the full height of tomographic frame compilation.
 
 Finally, for individual segmentation of tracer particles, it is possible to use each grid cell to increase the contrast of the original raw image and determine its own local threshold level automatically using the Otsu method. In another word, the automatic local threshold level and the contrast value is set depending on the brightness of each tracer particles with the corresponding 3D
-grid cell. A final result is shown in fig. 10b and fig. 10c illustrates the poor
-segmented result after global Otsu segmentation (GOS) method was applied for a
+grid cell. A final result is shown in fig. 10b for a
 given cross-section. This naturally shows less segmented particles than in the
 case of the MIP (maximum intensity projection), since all tracer particles are
-not exactly located in the same plane. The performance of the proposed algorithm
-and sensitivity analysis of applied methods has been discussed in Section 4.5.
-The overall segmentation algorithm is summarized in the flowchart shown in fig.11.
+not exactly located in the same plane. The overall segmentation algorithm is summarized in the flowchart shown in fig.11.
 
 ```
 
@@ -515,11 +513,12 @@ Output (Fig. 11): Full flowchart of the segmentation algorithm.
 
 #### Three-dimensional view of segmented tracer particles
 
-So far, only one frame an image that contains some tracer particles are taken in the above procedure.
+So far, only one frame of an image that contains some tracer particles are taken in the above procedures.
 
-%% middleFrame = vol(:,:,1000); % take one frame an image that contains some tracer particles
+%% middleFrame = vol(:,:,1000); % take one frame of an image that contains some tracer particles
 
 However, the sequence of X-ray image contains 2000 frames of image, hence to segment the tracer particles for the entire sequence of the image, there need to repeat applying the same procedure inside a loop.
+(Alternative option: instead of using one global grid, skip this step-A and start using each frame sequence of the original image as an input in step-B, in which it will create different local grids for each frame).
 
 Afterwards, the following procedures will allow seeing the isosurface of the rebuilt 3D tracer particles.
 

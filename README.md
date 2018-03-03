@@ -72,7 +72,7 @@ fileName = ‘filename.tif’;
 
 totalFrame = 2000;  % total number of frames
 
-for i=1:totalFrame
+for i=1:totalFrame-1
 
 vol(:,:,i) = imread(fileName,i);
 
@@ -142,7 +142,7 @@ image is segmented by simply applying manually set threshold value so as to
 satisfyingly reveal all tracer particles. 
 (Alternative option: instead of using one global grid, skip this step-A and start using each frame sequence of the original image as an input in the following step-B, in which it will create different local grids for each frame).
 
-```
+```matlab
 
 volProj = max(vol,[],3); % maximum intensity projection - (shown in fig.3b)
 
@@ -181,7 +181,7 @@ space and a poor local segmentation result. Thus, there is need to enhance the
 profile by applying an auto-correlation method, which is detailed in the next
 step.
 
-```
+```matlab
 
 hProfile = mean(projBW2); % horizontal profile, input image from step-A
 
@@ -218,7 +218,7 @@ in fig. 5, where the peaks are identified by red triangles based on the left and
 right slopes of the auto-correlated profile. In that case, the estimation of the
 cell spacing value can be found by calculating the mean difference of maxima.
 
-```
+```matlab
 
 atcr = xcov(hProfile); % unbiased autocorrelation
 
@@ -265,7 +265,7 @@ the effect of such filtering on the original mean profile shown in fig. 4. The
 number of triangles, which depicts the edges of zero-intensity value regions,
 but also intensity peaks, has increased.
 
-```
+```matlab
 
 strLine = strel('line',nomSpace,0);
 
@@ -294,7 +294,7 @@ hence it is possible to segment and labels each peak region using Otsu's method.
 Then, one can easily calculate its median position between each adjacent labeled
 peak where the intensity value is zero, as illustrated by the red circle in fig.7.
 
-```
+```matlab
 
 level = graythresh(hProfile2/255)*255;
 
@@ -345,7 +345,7 @@ adjacent labelled peaks in red circle.).
 midpoint between the adjacent centers of each label peak provides locations of
 the vertical lines of the final grid, as illustrated in fig. 8.
 
-```
+```matlab
 
 xGrid = round([xCenters(1:end)])
 
@@ -379,7 +379,7 @@ retrieve the horizontal grid lines. The final result of the non-regular grid is
 shown in fig. 9. Note that particles can be cut by grid lines and portions of
 more than one particle can occur in the same grid cell.
 
-```
+```matlab
 
 vProfile = mean(projBW2'); % vertical profile
 
@@ -433,7 +433,7 @@ yGrid = round([yCenters(1:end)])
 
 Put interrogation windows (IW) containing at the best one single marker particle at a time.
 
-```
+```matlab
 
 figure,imshow(projBW2)
 
@@ -467,7 +467,7 @@ given cross-section. This naturally shows less segmented particles than in the
 case of the MIP (maximum intensity projection), since all tracer particles are
 not exactly located in the same plane. The overall segmentation algorithm is summarized in the flowchart shown in fig.11.
 
-```
+```matlab
 
 middleFrame = vol(:,:,1000) ; % take one frame an image that contains some tracer particles
 
@@ -511,11 +511,27 @@ Output (Fig. 11): Full flowchart of the segmentation algorithm.
 
 ------
 
+#### Calculating axial particle velocity 
+
+The ROFEX scanner comes with two measurement planes, which gives an ability to determine the axial velocity of particles. The axial velocity of tracer particle was calculated based on the residence time of a particle in a CT plane, which is the statistical analysis of successive frames or discharging time of tracer particles while passing both measurement planes. The distance d between the two measurement planes is 11 mm, as already mentioned earlier. Hence, the axial velocity Vaxial can show the tracer particle movement rate in the axial direction, which is calculated as: 
+
+![](media/123velocity0.png)
+             
+Where t_u  and tl  are the time detection of the same tracer particle in the upper and lower measurement planes respectively. In general, the velocity calculations considered when the particles enter the scanning planes.
+Based on the above equation (1), the axial mean velocity is equal to 9.373 mm/s. Besides the potential of accurately measure velocities, this knowledge is also an important parameter in order to reconstruct particle volume, as it is mentioned in the following section.
+
+
 #### Three-dimensional view of segmented tracer particles
+
+To visualize and represent the real size of tracer particles in 3D, first, it needs to convert the time frames of segmented images into voxel size along the z-dimension (note that the z-dimension represents time in milliseconds). Since the mean axial velocity Vaxial of each tracer particle has been evaluated and the acquisition rate f and the spatial resolution SR of the X-ray system are known parameters(about 1 mm), it is possible to estimate the average number of frames of an image Nv that corresponds to the same pixel size of the reconstructed cross-section as follows:
+
+![](media/1234nberofframes1230.png)
+
+The segmented frames of tracer particles can now be separated into stacks of Nv frames at most that are averaged to allow the space conversion. 
 
 So far, only one frame of an image that contains some tracer particles are taken in the above procedures.
 
-%% middleFrame = vol(:,:,1000); % take one frame of an image that contains some tracer particles
+(%% middleFrame = vol(:,:,1000); % take one frame of an image that contains some tracer particles)
 
 However, the sequence of X-ray image contains 2000 frames of image, hence to segment the tracer particles for the entire sequence of the image, there need to repeat applying the same procedure inside a loop.
 (Alternative option: instead of using one global grid, skip this step-A and start using each frame sequence of the original image as an input in step-B, in which it will create different local grids for each frame).
@@ -523,9 +539,23 @@ However, the sequence of X-ray image contains 2000 frames of image, hence to seg
 Afterwards, the following procedures will allow seeing the isosurface of the rebuilt 3D tracer particles.
 
 
-```
+```matlab
 
 totalFrame = 2000; % number of frames of an image to be segmented/analyzed.
+
+fileName = ‘filename.tif’; 
+
+totalFrame = 2000;  % total number of frames
+
+sb = 20; % sub block of images deraved from equation 2: Nv
+
+dim = size(vol);
+
+%%dim =
+
+%%         256         256        2000
+         
+nbblocks = ceil(dim(3)./sb); %z-dimension represents time in milliseconds
 
 for i=1:totalFrame-1
 

@@ -403,7 +403,7 @@ bw = im2bw(vProfile2/255,level); % binarized peak regions
 
 L = bwlabel(bw); % labeled regions
 
-stats = regionprops(\~L); % get zeros
+stats = regionprops(~L); % get zeros
 
 centroids = [stats.Centroid]; % centroids
 
@@ -515,7 +515,7 @@ Output (Fig. 11): Full flowchart of the segmentation algorithm.
 
 The ROFEX scanner comes with two measurement planes, which gives an ability to determine the axial velocity of particles. The axial velocity of tracer particle was calculated based on the residence time of a particle in a CT plane, which is the statistical analysis of successive frames or discharging time of tracer particles while passing both measurement planes. The distance d between the two measurement planes is 11 mm, as already mentioned earlier. Hence, the axial velocity Vaxial can show the tracer particle movement rate in the axial direction, which is calculated as: 
 
-![](media/123velocity0.png)
+![](media/edca071331bc26484906940a9b815416.png)
              
 Where t_u  and tl  are the time detection of the same tracer particle in the upper and lower measurement planes respectively. In general, the velocity calculations considered when the particles enter the scanning planes.
 Based on the above equation (1), the axial mean velocity is equal to 9.373 mm/s. Besides the potential of accurately measure velocities, this knowledge is also an important parameter in order to reconstruct particle volume, as it is mentioned in the following section.
@@ -523,9 +523,9 @@ Based on the above equation (1), the axial mean velocity is equal to 9.373 mm/s.
 
 #### Three-dimensional view of segmented tracer particles
 
-To visualize and represent the real size of tracer particles in 3D, first, it needs to convert the time frames of segmented images into voxel size along the z-dimension (note that the z-dimension represents time in milliseconds). Since the mean axial velocity Vaxial of each tracer particle has been evaluated and the acquisition rate f and the spatial resolution SR of the X-ray system are known parameters(about 1 mm), it is possible to estimate the average number of frames of an image Nv that corresponds to the same pixel size of the reconstructed cross-section as follows:
+To visualize and represent the real size of tracer particles in 3D, first, it needs to convert the time frames of segmented images into voxel size along the z-dimension (note that the z-dimension represents time in milliseconds). Since the mean axial velocity Vaxial of each tracer particle has been evaluated and the acquisition rate f (2,000 cross-sectional images per second) and the spatial resolution SR of the X-ray system are known parameters(about 1 mm), it is possible to estimate the average number of frames of an image Nv that corresponds to the same pixel size of the reconstructed cross-section as follows:
 
-![](media/1234nberofframes1230.png)
+![](media/dea11d896faf187d0186066ebdc2b7e6.png)
 
 The segmented frames of tracer particles can now be separated into stacks of Nv frames at most that are averaged to allow the space conversion. 
 

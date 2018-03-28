@@ -8,7 +8,10 @@ segment tracer particles based on two-dimensional sequence of images from the
 [ROFEX (Ultrafast electron beam X-ray computed
 tomography)](https://www.hzdr.de/db/Cms?pOid=30242&pNid=0) data.
 
-By Selam Waktola, selam.waktola@gmail.com
+[You can access the full article online: doi:10.1007/s00348-018-2523-2](https://link.springer.com/article/10.1007/s00348-018-2523-2/fulltext.html)
+
+By Selam Waktola
+selam.waktola@gmail.com
 
 ## Introduction
 
@@ -45,7 +48,9 @@ interest in which more or less constant background and contrast were found.
 Their main goal was the definition of interrogation windows containing at the
 best one single marker particle at a time. The method is based on a sequential
 segmentation in x and y directions and a combination of both results to obtain a
-rectangular grid of cell boundaries.
+rectangular grid of cell boundaries. 
+
+The overall method named IGLOS(Irregular Grid Local Otsu Segmentation) is stated in detail in the published article (Waktola et al., 2018).
 
 (Fig. 1 Principle of ultrafast electron beam X-ray CT scanner with cylindrical
 silo model with 20 tracer particles picture.)
@@ -676,6 +681,8 @@ the below three-dimensional image views).
 ------
 
 ## Reference
+
+Waktola, S., Bieberle, A., Barthel, F., Bieberle, M., Hampel, U., Grudzień, K., Babout, L.: A new data-processing approach to study particle motion using ultrafast X-ray tomography scanner: case study of gravitational mass flow. Exp. Fluids. 59, 69 (2018). doi:10.1007/s00348-018-2523-2
 
 Ketterhagen, W. R., Ende, M. T. and Hancock, B. C. (2009) ‘Process Modeling in
 the Pharmaceutical Industry using the Discrete Element Method’, *Journal of

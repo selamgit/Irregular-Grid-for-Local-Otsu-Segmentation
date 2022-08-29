@@ -694,7 +694,6 @@ Computer Graphics and Image Processing. IEEE Comput. Soc, pp. 112–119.
 
 ## Author
 
-***Selam Waktola** - *selam.waktola@gmail.com* -
 [selamgit](https://github.com/selamgit)
 
 ## License
